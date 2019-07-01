@@ -32,7 +32,7 @@ VMware workstations 14 的安装这里就不多说了，可以自己去网上找
 
 我使用的镜像是直接在 <https://msdn.itellyou.cn/> 这个网站找的，相信很多人都知道这个网站了。
 
-![1561691966361](Windows_server.assets/1561691966361.png)
+![1561691966361](Windows_server_install.assets/1561691966361.png)
 
 
 
@@ -64,7 +64,7 @@ cn_win_srv_2003_r2_enterprise_with_sp2_vl_cd2_X13-13895.iso
 
 3. 可用看到已经进入到开机界面了
 
-   ![1561692331290](Windows_server.assets/1561692331290.png)
+   ![1561692331290](Windows_server_install.assets/1561692331290.png)
 
 4. 按 ctrl+alt+del 即可登录进去，因为我没有设置密码，输入账户密码就可用免了，直接点确定就进去了
 

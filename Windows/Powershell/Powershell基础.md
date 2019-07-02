@@ -6,13 +6,19 @@
 
 
 
+---
+
+### Powershell 历史版本与支持的
+
+[Differences between PowerShell versions](https://4sysops.com/wiki/differences-between-powershell-versions/)
+
+
+
 ----
 
-### Powershell 的安装
+### Powershell 的安装  
 
-
-
-
+  
 
 ----
 

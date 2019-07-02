@@ -8,7 +8,7 @@
 ### yum-utils
 <br>
 yum-utils：与Yum整合以多种方式扩大其机功能实用程序的集合，从而使其功能更强大，使用更方便。  
-<br/>
+<br>
 yum-utils 的功能介绍参考：
 [yum-utils](https://blog.csdn.net/xiaoxiao_22/article/details/7044583)
 

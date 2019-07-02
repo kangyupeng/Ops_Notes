@@ -12,4 +12,4 @@ yum-utils：与Yum整合以多种方式扩大其机功能实用程序的集合�
 
 上下有空行
 
-yum-utils 的功能介绍参考： [yum-utils](https://blog.csdn.net/xiaoxiao_22/article/details/7044583)
+yum-utils 的功能介绍参考：    [yum-utils](https://blog.csdn.net/xiaoxiao_22/article/details/7044583)

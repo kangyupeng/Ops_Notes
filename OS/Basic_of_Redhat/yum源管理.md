@@ -1,13 +1,23 @@
-#  Yum  
+#  Yum源  
 
 
  > 本章节主要是介绍了yum源相关的各方面使用，例如如何使用yum来管理软件包，如何创建yum源，自建yum仓库等
 
 
 
----
+## 一、RHEL用户订阅红帽yum源
 
-### 创建一个本地yum源
+如果我们使用的是RHEL的系统，那么如果安装系统后没有进行激活授权的话，官方的yum repo是不可用的，使用下面这个命令就可以进行红帽的yum repo订阅了。
+
+```bash
+subscription-manager register --username=用户名  --password=密码  --auto-attach
+```
+
+参考：[RHEL7正版系统注册和订阅](https://www.xjimmy.com/rhel7_register.html)
+
+
+
+## 二、创建本地yum源
 
 - **安装 createrepo**
 
@@ -23,19 +33,15 @@
 
 - **使用 createrepo 创建依赖关系**
 
-  具体可以参考下面的同步yum源
+  *具体可以参考下面的同步yum源中所提到的内容*
 
 
----
-
-### 同步yum源
+## 三、同步yum源
 
 ​	在CentOS或者RHEL中，我们的本地yum源是需要定期更新的，所以应该要如何去同步yum源呢？  
 使用`reposync`命令可以用来同步yum源，需要安装`yum-utils`包。  
 yum-utils：与Yum整合以多种方式扩大其机功能实用程序的集合，从而使其功能更强大，使用更方便。  
 yum-utils 的更多功能介绍参考： [yum-utils](https://blog.csdn.net/xiaoxiao_22/article/details/7044583)
-
-
 
 - **安装 yum-utils 与 createrepo**
 
@@ -193,10 +199,22 @@ yum-utils 的更多功能介绍参考： [yum-utils](https://blog.csdn.net/xiaox
   ```
 
 
-### 通过ftp的方式让局域网内其他机器共享本地yum源
+
+
+
+## 四、通过ftp的方式让局域网内其他机器共享本地yum源
 
 
 
 
 
-### 通过HTTP的方式让局域网内其他机器共享本地yum源
+
+## 五、通过HTTP的方式让局域网内其他机器共享本地yum源
+
+
+
+
+
+
+
+## 六、客户端 .repo 配置文件详解

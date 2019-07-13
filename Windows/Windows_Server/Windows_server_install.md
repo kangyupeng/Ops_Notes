@@ -108,12 +108,9 @@ cn_win_srv_2003_r2_enterprise_with_sp2_vl_cd2_X13-13895.iso
 
 ### 安装 Windows Server 2008 R2 企业版 虚拟机
 
-
-
 #### Windows Server 2008 R2 标准版可用密钥
 
-**4GGC4-9947F-FWFP3-78P6F-J9HDR**
-
+**4GGC4-9947F-FWFP3-78P6F-J9HDR**  
 亲测有效，不过只有180天的有效期，做做测试的话还是够了
 
 
@@ -142,11 +139,17 @@ telnet
 
 ---
 
-### 安装 Windows Server 2012 R2 企业版 虚拟机
+### 安装 Windows Server 2012 企业版 虚拟机
 
-待写
+#### Windows Server 2008 标准版可用密钥
+
+XC9B7-NBPP2-83J2H-RHMBY-92BT4  
+亲测有效
 
 
 
+---
 
+激活码大全网站：  
+<https://jihuo.ma/windows-server-2012-standard-key.html>
 

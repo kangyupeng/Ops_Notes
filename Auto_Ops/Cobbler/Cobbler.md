@@ -289,17 +289,35 @@ running shell triggers from /var/lib/cobbler/triggers/change/*
   # cobbler profile edit --name=rhel76-x86_64 --kickstart=/var/lib/cobbler/kickstarts/test.ks
   ```
 
-### Set DHCP 
+### Kickstar Configuration
+
+参考 kickstart.md
+
+### DHCP Configuration 
+
+文件配置
+
+重启DHCP
 
 
 
-## deployment client 
+## Deployment Client 
 
+注意： *虚拟机网卡采用NAT模式，不要使用桥接模式，因为稍后我们会搭建DHCP服务器，在同一局域网多个DHCP服务会有冲突。* VMware的NAT模式的dhcp服务也关闭，避免干扰。
 
+## Questions
 
-## references
+- cobbler在企业中的通用性
+
+  突然在想，如果只有一个cobbler服务器的话，如果在比较复杂的网络环境中，还能够适用吗？  
+  会不会因为复杂的网络环境导致很多区域内的服务器无法从cobbler server这里通过DHCP进行IP分配以及获取需要的RPM等  
+  另外就是如果不同的网段的话，怎么办？cobbler中的DHCP已经是指定了网段的，总不可能每个网段搭建一个cobbler server端吧，难道不同的网段安装机器就重新对cobbler服务端的DHCP重新进行设置吗？还是有什么其他更方便的方式去解决。
+
+## References Documents 
 
 - 使用Cobbler自动化和管理系统安装<https://www.ibm.com/developerworks/cn/linux/l-cobbler/index.html>
+- kickstart无人值守安装 https://www.zyops.com/autoinstall-kickstart/
+- kickstart配置文件 https://www.jianshu.com/p/2d12b187be7e
 
 
 

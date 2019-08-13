@@ -20,10 +20,11 @@ E-mail: shine-fire@qq.com
 
 **环境描述**
 
-| 项目    | 名称                                 |
-| :------ | ------------------------------------ |
-| OS      | CentOS Linux release 7.6.1810 (Core) |
-| Cobbler | Cobbler 2.8.4-4.el7                  |
+| 项目               | 名称                                 |
+| :----------------- | ------------------------------------ |
+| OS                 | CentOS Linux release 7.6.1810 (Core) |
+| Cobbler            | Cobbler 2.8.4-4.el7                  |
+| VMware WorkStation | 14.0.0 build-6661328                 |
 
 **关闭selinux**
 
@@ -304,6 +305,10 @@ running shell triggers from /var/lib/cobbler/triggers/change/*
 ## Deployment Client 
 
 注意： *虚拟机网卡采用NAT模式，不要使用桥接模式，因为稍后我们会搭建DHCP服务器，在同一局域网多个DHCP服务会有冲突。* VMware的NAT模式的dhcp服务也关闭，避免干扰。
+
+
+
+
 
 ## Questions
 

@@ -148,3 +148,95 @@ Kickstart Configurator 是一个可以用来生成ks配置文件的图形工具
 
 
 
+## Templates
+
+My RHEL7
+
+```
+# version=RHEL7
+# System authorization information
+auth --useshadow --enablemd5
+# Install OS instead of upgrade
+install
+# Reboot after installation
+reboot
+# Use CDROM installation media
+# cdrom
+# Use network install os
+url --url=""
+# Firewall configuration
+firewall --enabled
+firstboot --disable
+ignoredisk --only-use=sda
+# Keyboard layouts
+# old format: keyboard us
+# new format:
+keyboard --vckeymap=us --xlayouts='us'
+# System language
+lang en_US.UTF-8
+
+# Network information
+network  --bootproto=dhcp
+network  --hostname=localhost.localdomain
+# Root password
+rootpw --iscrypted $1$suiyitia$6u/UI5bW1iuw/0x6TvAHa1
+# System services
+services --enabled="chronyd"
+# System timezone
+timezone Asia/Shanghai --isCST
+# X Window System configuration information
+xconfig  --startxonboot
+# System bootloader configuration
+bootloader --location=mbr --boot-drive=sda
+# Clear the Master Boot Record
+zerombr
+# Partition clearing information
+clearpart --all --initlabel 
+# Disk partitioning information
+part swap --fstype="swap" --size=1056
+part /boot --fstype="xfs" --size=300
+part / --fstype="xfs" --size=19123
+
+%post
+/usr/sbin/adduser apt
+/usr/sbin/usermod -p '$1$nf$pXv7cZIcqPqhKI6MamNOc/' apt
+/usr/bin/chfn -f "apt" apt
+mv /etc/rc.d/rc.local /etc/rc.d/rc.local.00
+echo '#!/bin/bash' > /etc/rc.d/rc.local
+ln -s ../rc.local /etc/rc.d/rc5.d/S99rclocal
+chmod 755 /etc/rc.d/rc.local
+echo 'mkdir -p /var/log/vmware' >> /etc/rc.d/rc.local
+echo 'exec 1> /var/log/vmware/rc.local.log' >> /etc/rc.d/rc.local
+echo 'exec 2>&1' >> /etc/rc.d/rc.local
+echo 'set -x' >> /etc/rc.d/rc.local
+echo 'echo Installing Open VM Tools' >> /etc/rc.d/rc.local
+echo 'set -x' >> /etc/rc.d/rc.local
+echo '/bin/eject sr0 || /bin/true' >> /etc/rc.d/rc.local
+echo '/bin/eject sr1 || /bin/true' >> /etc/rc.d/rc.local
+echo '/bin/vmware-rpctool' \'guest.upgrader_send_cmd_line_args --default\' >> /etc/rc.d/rc.local
+echo '/bin/vmware-rpctool' \'upgrader.setGuestFileRoot /tmp\' >> /etc/rc.d/rc.local
+echo '/bin/vmware-rpctool' \'toolinstall.installerActive 1\' >> /etc/rc.d/rc.local
+echo '/bin/vmware-rpctool' \'toolinstall.installerActive 100\' >> /etc/rc.d/rc.local
+echo 'rm -f /etc/rc.d/rc.local' >> /etc/rc.d/rc.local
+echo 'rm -f /etc/rc.d/rc5.d/S99rclocal' >> /etc/rc.d/rc.local
+echo 'mv /etc/rc.d/rc.local.00 /etc/rc.d/rc.local' >> /etc/rc.d/rc.local
+/bin/echo done
+%end
+
+%packages
+@base
+@core
+@guest-desktop-agents
+binutils
+chrony
+ftp
+gcc
+kernel-devel
+make
+open-vm-tools
+patch
+python
+
+%end
+```
+

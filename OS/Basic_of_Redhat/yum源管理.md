@@ -85,7 +85,7 @@ yum-utils 的更多功能介绍参考： [yum-utils](https://blog.csdn.net/xiaox
 
 - **下载 metadata** 
 
-  下载了 metadata  之后才能直接那些组的意思吧
+  下载了 metadata  之后才能直接使用那些组，这里是演示直接同步rpms的时候就一起把metadata也下载下来了
 
   ```bash
   [root@apt-1 repodata]# reposync -r base -p /test/repo/ --downloadcomps --download-metadata 

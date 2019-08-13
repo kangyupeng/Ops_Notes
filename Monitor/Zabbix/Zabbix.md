@@ -186,3 +186,83 @@
 
 
 
+### 附：离线下载zabbix依赖
+
+1. 配置好epel源与zabbix源
+
+   ```bash
+   # rpm -ivh http://mirrors.aliyun.com/epel/7/x86_64/Packages/e/epel-release-7-11.noarch.rpm 
+   # rpm -ivh http://repo.zabbix.com/zabbix/3.2/rhel/7/x86_64/zabbix-release-3.2-1.el7.noarch.rpm 
+   # yum clean all && yum repolist 
+   ```
+
+2. yum downonly 下载好相关依赖包
+
+   ```bash
+   # mkdir -p /softs/zabbix/Packages
+   # yum install mariadb mariadb-server php php-mysql httpd zabbix-server-mysql zabbix-web-mysql zabbix-get --downloadonly --downloaddir=/softs/zabbix/Packages
+   # ls /softs/zabbix/Packages
+   apr-1.4.8-3.el7_4.1.x86_64.rpm                 mariadb-server-5.5.60-1.el7_5.x86_64.rpm        php-common-5.4.16-46.el7.x86_64.rpm
+   apr-util-1.5.2-6.el7.x86_64.rpm                net-snmp-libs-5.7.2-38.el7_6.2.x86_64.rpm       php-gd-5.4.16-46.el7.x86_64.rpm
+   dejavu-fonts-common-2.33-6.el7.noarch.rpm      OpenIPMI-libs-2.0.23-2.el7.x86_64.rpm           php-ldap-5.4.16-46.el7.x86_64.rpm
+   dejavu-sans-fonts-2.33-6.el7.noarch.rpm        OpenIPMI-modalias-2.0.23-2.el7.x86_64.rpm       php-mbstring-5.4.16-46.el7.x86_64.rpm
+   fontpackages-filesystem-1.44-8.el7.noarch.rpm  perl-Compress-Raw-Bzip2-2.061-3.el7.x86_64.rpm  php-mysql-5.4.16-46.el7.x86_64.rpm
+   fping-3.10-4.el7.x86_64.rpm                    perl-Compress-Raw-Zlib-2.061-4.el7.x86_64.rpm   php-pdo-5.4.16-46.el7.x86_64.rpm
+   httpd-2.4.6-89.el7.centos.1.x86_64.rpm         perl-DBD-MySQL-4.023-6.el7.x86_64.rpm           php-xml-5.4.16-46.el7.x86_64.rpm
+   httpd-tools-2.4.6-89.el7.centos.1.x86_64.rpm   perl-DBI-1.627-4.el7.x86_64.rpm                 t1lib-5.1.2-14.el7.x86_64.rpm
+   iksemel-1.4-2.el7.centos.x86_64.rpm            perl-IO-Compress-2.061-2.el7.noarch.rpm         unixODBC-2.3.1-11.el7.x86_64.rpm
+   libtool-ltdl-2.4.2-22.el7_3.x86_64.rpm         perl-Net-Daemon-0.48-5.el7.noarch.rpm           zabbix-get-3.2.11-1.el7.x86_64.rpm
+   libXpm-3.5.12-1.el7.x86_64.rpm                 perl-PlRPC-0.2020-14.el7.noarch.rpm             zabbix-server-mysql-3.2.11-1.el7.x86_64.rpm
+   libzip-0.10.1-8.el7.x86_64.rpm                 php-5.4.16-46.el7.x86_64.rpm                    zabbix-web-3.2.11-1.el7.noarch.rpm
+   mailcap-2.1.41-2.el7.noarch.rpm                php-bcmath-5.4.16-46.el7.x86_64.rpm             zabbix-web-mysql-3.2.11-1.el7.noarch.rpm
+   mariadb-5.5.60-1.el7_5.x86_64.rpm              php-cli-5.4.16-46.el7.x86_64.rpm
+   ```
+
+3. createrepo 创建依赖关系
+
+   ```bash
+   # yum -y install createrepo
+   # createrepo -d /softs/zabbix/
+   Spawning worker 0 with 41 pkgs
+   Workers Finished
+   Saving Primary metadata
+   Saving file lists metadata
+   Saving other metadata
+   Generating sqlite DBs
+   Sqlite DBs complete
+   ```
+
+4. 编写 .repo 文件进行局域网内的zabbix yum安装
+
+   ```bash
+   # vim /etc/yum.repos.d/zabbix_local.repo
+   [zabbix_local]
+   name = zabbix_local
+   baseurl = file:///softs/zabbix/
+   enabled = 1
+   gpgcheck = 0
+   # yum clean all && yum repolist 
+   # yum -y install zabbix-server-mysql zabbix-web-mysql zabbix-get
+   ...
+   ...
+   
+   Installed:
+     zabbix-get.x86_64 0:3.2.11-1.el7                   zabbix-server-mysql.x86_64 0:3.2.11-1.el7                   zabbix-web-mysql.noarch 0:3.2.11-1.el7                  
+   
+   Dependency Installed:
+     OpenIPMI-libs.x86_64 0:2.0.23-2.el7     OpenIPMI-modalias.x86_64 0:2.0.23-2.el7    apr.x86_64 0:1.4.8-3.el7_4.1                apr-util.x86_64 0:1.5.2-6.el7          
+     dejavu-fonts-common.noarch 0:2.33-6.el7 dejavu-sans-fonts.noarch 0:2.33-6.el7      fontpackages-filesystem.noarch 0:1.44-8.el7 fping.x86_64 0:3.10-4.el7              
+     httpd.x86_64 0:2.4.6-89.el7.centos.1    httpd-tools.x86_64 0:2.4.6-89.el7.centos.1 iksemel.x86_64 0:1.4-2.el7.centos           libXpm.x86_64 0:3.5.12-1.el7           
+     libtool-ltdl.x86_64 0:2.4.2-22.el7_3    libzip.x86_64 0:0.10.1-8.el7               mailcap.noarch 0:2.1.41-2.el7               net-snmp-libs.x86_64 1:5.7.2-38.el7_6.2
+     php.x86_64 0:5.4.16-46.el7              php-bcmath.x86_64 0:5.4.16-46.el7          php-cli.x86_64 0:5.4.16-46.el7              php-common.x86_64 0:5.4.16-46.el7      
+     php-gd.x86_64 0:5.4.16-46.el7           php-ldap.x86_64 0:5.4.16-46.el7            php-mbstring.x86_64 0:5.4.16-46.el7         php-mysql.x86_64 0:5.4.16-46.el7       
+     php-pdo.x86_64 0:5.4.16-46.el7          php-xml.x86_64 0:5.4.16-46.el7             t1lib.x86_64 0:5.1.2-14.el7                 unixODBC.x86_64 0:2.3.1-11.el7         
+     zabbix-web.noarch 0:3.2.11-1.el7       
+   
+   Complete!
+   ```
+
+5. OK !!!
+
+
+

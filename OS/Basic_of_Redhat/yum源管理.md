@@ -15,8 +15,6 @@ subscription-manager register --username=用户名  --password=密码  --auto-at
 
 参考：[RHEL7正版系统注册和订阅](https://www.xjimmy.com/rhel7_register.html)
 
-
-
 ## 二、创建本地yum源
 
 - **安装 createrepo**
@@ -97,7 +95,7 @@ yum-utils 的更多功能介绍参考： [yum-utils](https://blog.csdn.net/xiaox
   drwxr-xr-x. 2 root root   4096 Jul  2 20:17 repodata
   ```
 
-- **加载元数据信息**
+- **创建yum文件索引与组索引**
 
   ```bash
   [root@apt-1 base]# createrepo /test/repo/base/ -g comps.xml  
@@ -129,7 +127,7 @@ yum-utils 的更多功能介绍参考： [yum-utils](https://blog.csdn.net/xiaox
 
   通过加载 comps.xml 生成后的repodata目录：
 
-  ```
+  ```bash
   [root@apt-1 base]# ll repodata/
   total 28940
   -rw-r--r--. 1 root root 2951663 Jul  2 21:23 25cd2c29e5adb2b6f8a5b091237dd9f760e97815b37f2557f2cd1c12a5f294f0-primary.xml.gz
@@ -149,7 +147,7 @@ yum-utils 的更多功能介绍参考： [yum-utils](https://blog.csdn.net/xiaox
 
   ```bash
   [root@apt-1 yum.repos.d]# tar zcvf repo-bk.tar.gz CentOS-*
-  [root@apt-1 yum.repos.d]# vim test-base.repo 
+  [root@apt-1 yum.repos.d]# vim test-base.repo
   [test-base]
   name=CentOS-$releasever - Test - Base
   baseurl=file:///test/repo/base/
@@ -160,8 +158,8 @@ yum-utils 的更多功能介绍参考： [yum-utils](https://blog.csdn.net/xiaox
 - **清除cache，创建cache**
 
   ```bash
-  [root@apt-1 yum.repos.d]# yum clean all 
-  [root@apt-1 yum.repos.d]# yum makecache 
+  [root@apt-1 yum.repos.d]# yum clean all
+  [root@apt-1 yum.repos.d]# yum makecache
   ```
 
 - **查看 yum grouplist**
@@ -200,8 +198,6 @@ yum-utils 的更多功能介绍参考： [yum-utils](https://blog.csdn.net/xiaox
 
 
 
-
-
 ## 四、通过ftp的方式让局域网内其他机器共享本地yum源
 
 
@@ -211,7 +207,129 @@ yum-utils 的更多功能介绍参考： [yum-utils](https://blog.csdn.net/xiaox
 
 ## 五、通过HTTP的方式让局域网内其他机器共享本地yum源
 
+- **部署HTTP服务**
 
+  ```bash
+  # yum -y install httpd 
+  ```
+
+- **配置httpd**
+
+  ```bash 
+  # cat /etc/httpd/conf.d/pub.conf    
+  <Directory "/var/www/html/pub">
+      Options Indexes FollowSymLinks
+      AllowOverride None
+      Order Allow,deny
+      Allow from all
+  </Directory>
+  ```
+
+- **创建好相应的文件存放路径**
+
+  文件目录结构如下：
+
+  ```bash
+  # find /var/www/html/ -maxdepth 6
+  /var/www/html/
+  /var/www/html/index.html
+  /var/www/html/sorry.html
+  /var/www/html/pub
+  /var/www/html/pub/isos
+  /var/www/html/pub/isos/rhel7
+  /var/www/html/pub/isos/rhel7/rhel-server-7.2-x86_64-dvd.iso
+  /var/www/html/pub/isos/rhel7/rhel-server-7.6-x86_64-dvd.iso
+  /var/www/html/pub/isos/rhel6
+  /var/www/html/pub/isos/rhel6/rhel-server-6.1-x86_64-dvd.iso
+  /var/www/html/pub/isos/rhel6/rhel-server-6.6-x86_64-dvd.iso
+  /var/www/html/pub/yum
+  /var/www/html/pub/yum/rhel
+  /var/www/html/pub/yum/rhel/rhel7
+  /var/www/html/pub/yum/rhel/rhel7/x86_64
+  /var/www/html/pub/yum/rhel/rhel7/x86_64/rhel-7.2-server-rpms
+  /var/www/html/pub/yum/rhel/rhel6
+  /var/www/html/pub/yum/rhel/rhel6/x86_64
+  /var/www/html/pub/yum/rhel/rhel6/x86_64/rhel-6.1-server-rpms
+  /var/www/html/pub/yum/rhel/rhel6/x86_64/rhel-6.6-server-rpms
+  /var/www/html/pub/repos
+  /var/www/html/pub/repos/rhel7
+  /var/www/html/pub/repos/rhel7/rhel72.repo
+  /var/www/html/pub/repos/rhel6
+  /var/www/html/pub/repos/rhel6/rhel66.repo
+  /var/www/html/pub/repos/rhel6/rhel61.repo
+  ```
+
+- 配置html页面
+
+  实际的HTML页面内容请查看yum源服务端的 /var/www/html/index.html
+
+  以下模板仅为参考：
+
+  ```
+  <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">
+  <html><head>
+  <title>Red Hat Enterprise Linux yum 仓库</title>
+  </head><body>
+  <h1>Red Hat Enterprise Linux yum 仓库</h1>
+  <hr>
+  
+  <h3>Red Hat Enterprise Linux 6</h3>
+  <div class="messagebox" style="background-color: grey; boarder: 1px solid #c5d7e0; color: black; padding: 5px; margin: 1ex 0; min-height: 35px; padding-left: 45px;">
+  <ul><li>Red Hat Enterprise Linux 6 Server RPMS</li></ul>
+  </div>
+  <table width="100%" border="1">
+    <tr>
+      <th>Red Hat Enterprise Linux 6 yum配置</th>
+      <th>Red Hat Enterprise Linux 6 官方镜像：  &nbsp; &nbsp; &nbsp; &nbsp;  <a href="http://IP/pub/isos/rhel6">点击查看</a></th>
+    </tr>
+    <tr>
+      <th>Red Hat Enterprise Linux 6.1 yum 配置文件:  &nbsp; &nbsp; &nbsp; &nbsp;  <a href="http://IP/pub/repos/rhel6/rhel65.repo">点击查看</a></th>
+      <th>Red Hat Enterprise Linux 6.1 官方yum源: &nbsp; &nbsp; &nbsp; <a href="http://IP/pub/yum/rhel/rhel6/x86_64/rhel-6.1-server-rpms">点击进入</a></th>
+    </tr>
+    <tr>
+      <th>Red Hat Enterprise Linux 6.6 yum 配置文件:  &nbsp; &nbsp; &nbsp; &nbsp;  <a href="http://IP/pub/repos/rhel6/rhel66.repo">点击查看</a></th>
+      <th>Red Hat Enterprise Linux 6.6 官方yum源: &nbsp; &nbsp; &nbsp; <a href="http://IP/pub/yum/rhel/rhel6/x86_64/rhel-6.6-server-rpms">点击进入</a></th>
+    </tr>
+    <tr>
+  </table>
+  <h3>Red Hat Enterprise Linux 7</h3>
+  <div class="messagebox" style="background-color: grey; boarder: 1px solid #c5d7e0; color: black; padding: 5px; margin: 1ex 0; min-height: 35px; padding-left: 45px;">
+  <ul><li>Red Hat Enterprise Linux 7  Server RPMS</li></ul>
+  </div>
+  <table width="100%" border="1">
+    <tr>
+      <th>Red Hat Enterprise Linux 7 yum配置</th>
+      <th>Red Hat Enterprise Linux 7 官方镜像：  &nbsp; &nbsp; &nbsp; &nbsp;  <a href="http://IP/pub/isos/rhel7">点击查看</a></th>
+    </tr>
+    <tr>
+      <th>Red Hat Enterprise Linux 7.2 yum 配置文件:  &nbsp; &nbsp; &nbsp; &nbsp;  <a href="http://IP/pub/repos/rhel7/rhel72.repo">点击查看</a></th>
+      <th>Red Hat Enterprise Linux 7.2 官方yum源: &nbsp; &nbsp; &nbsp; <a href="http://IP//pub/yum/rhel/rhel7/x86_64/rhel-7.2-server-rpms">点击进入</a></th>
+    </tr>
+    <tr>
+      <th>Red Hat Enterprise Linux 7.6 yum 配置文件:  &nbsp; &nbsp; &nbsp; &nbsp;  <a href="http://IP/pub/repos/rhel7/rhel76.repo">点击查看</a></th>
+      <th>Red Hat Enterprise Linux 7.6 官方yum源: &nbsp; &nbsp; &nbsp; <a href="http://IP/sorry.html">点击进入</a></th>
+    </tr>
+  </table>
+  
+  <h4>yum配置文件使用方法：</h4>
+  <hr>
+  <div class="messagebox" style="background-color: grey; boarder: 1px solid #c5d7e0; color: black; padding: 5px; margin: 1ex 0; min-height: 35px; padding-left: 45px;">
+  <p># wget http://IP/pub/repos/rhel7/rhel7.repo</p>
+  <p># mv rhel7.repo /etc/yum.repos.d</p>
+  <p># yum clean all</p>
+  <p># yum repolist</p>
+  </div>
+  <hr>
+  <address>内部红帽 Linux yum仓库</address>
+  </body></html>
+  ```
+
+- 启动HTTP服务并设置为开机自启动
+
+  ```bash
+  # systemctl enable httpd --now
+  # systemctl status httpd
+  ```
 
 
 

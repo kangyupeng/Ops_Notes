@@ -1,14 +1,24 @@
 # Install Ansible
 
+## Author
+
+```tex
+Name:Shinefire
+Blog:
+E-mail:czy@clinux.cn
+```
+
 
 
 ## Preface
 
+本文档将会介绍介绍安装Ansible相关的一些操作，主要是提及到了在RHEL6与RHEL7中如何实现不同版本的ansible部署，因为少部分用户的生产环境中还存在着RHEL5的服务器，如果想使用Ansible来对RHEL5的服务器进行管理的话则需要Ansible2.3的版本，所以会有需要安装双版本的需求。
+
+部署ansible主要是有两种方式，一种是直接yum安装，一种是使用pip来进行安装。
 
 
 
-
-## RHEL7 Install Ansible
+## Install Two Difference Versions Ansible Use Pip
 
 
 
@@ -96,17 +106,6 @@
 
    如果网络情况允许则可以配置一个epel源来方便进行pip的安装，网络情况不允许的话则需要提前将相应需要的软件包离线下载好。
 
-   从互联网同步pip源以及离线安装pip的方法：
-
-   ```bash
-   # mkdir ./pip-packages
-   # pip download pip==19.2.2 -d ./pip-packages
-   # pip download virtualenv virtualenvwrapper -d ./pip-packages
-   # pip download ansible==2.3 -d ./pip-packages
-   # pip download ansible==2.6 -d ./pip-packages
-   # pip install --no-index --find-links=./pip-packages ansible==2.3
-   ```
-
 2. 安装需要的rpm包
 
    ```bash
@@ -167,13 +166,7 @@
 
 
 
-## Ansible Switch Usage
-
-### RHEL7
-
-
-
-### RHEL6
+### Ansible Switch Usage
 
 1. scl切换到python27环境
 

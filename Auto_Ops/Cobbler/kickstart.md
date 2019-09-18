@@ -240,3 +240,8 @@ python
 %end
 ```
 
+
+
+## 参考博客
+
+- kickstart配置文件详解和system-config-kickstart https://blog.csdn.net/taiyang1987912/article/details/42176709

@@ -3,8 +3,6 @@
 
  > 本章节主要是介绍了yum源相关的各方面使用，例如如何使用yum来管理软件包，如何创建yum源，自建yum仓库等
 
-
-
 ## 一、RHEL用户订阅红帽yum源
 
 如果我们使用的是RHEL的系统，那么如果安装系统后没有进行激活授权的话，官方的yum repo是不可用的，使用下面这个命令就可以进行红帽的yum repo订阅了。
@@ -15,7 +13,7 @@ subscription-manager register --username=用户名  --password=密码  --auto-at
 
 参考：[RHEL7正版系统注册和订阅](https://www.xjimmy.com/rhel7_register.html)
 
-## 二、创建本地yum源
+## 二、createrepo创建本地yum源
 
 - **安装 createrepo**
 
@@ -143,7 +141,9 @@ yum-utils 的更多功能介绍参考： [yum-utils](https://blog.csdn.net/xiaox
 
   加载comps.xml文件的话，能看到grouplist的分组信息
 
-- **修改yum源为本地yum源**
+## 四、使用yum源
+
+- **修改yum源配置文件为本地yum源**
 
   ```bash
   [root@apt-1 yum.repos.d]# tar zcvf repo-bk.tar.gz CentOS-*
@@ -162,10 +162,10 @@ yum-utils 的更多功能介绍参考： [yum-utils](https://blog.csdn.net/xiaox
   [root@apt-1 yum.repos.d]# yum makecache
   ```
 
-- **查看 yum grouplist**
+- **查看 groups**
 
   ```bash
-  [root@apt-1 yum.repos.d]# yum grouplist 
+  [root@apt-1 yum.repos.d]# yum groups list 
   Loaded plugins: fastestmirror, product-id, search-disabled-repos, subscription-manager
   This system is not registered with an entitlement server. You can use subscription-manager to register.
   There is no installed groups file.
@@ -195,14 +195,8 @@ yum-utils 的更多功能介绍参考： [yum-utils](https://blog.csdn.net/xiaox
      System Management
   Done
   ```
-
-
-
-## 四、通过ftp的方式让局域网内其他机器共享本地yum源
-
-
-
-
+  
+  **注意：**这样查看的话会有一些隐藏的groups是无法查看到的，如果想查看一些隐藏的groups需要使用命令`yum groups list hidden`
 
 
 ## 五、通过HTTP的方式让局域网内其他机器共享本地yum源
@@ -331,8 +325,10 @@ yum-utils 的更多功能介绍参考： [yum-utils](https://blog.csdn.net/xiaox
   # systemctl status httpd
   ```
 
+## 六、通过ftp的方式让局域网内其他机器共享本地yum源
 
+略（待以后补充吧）
 
+## 七、客户端 .repo 配置文件详解
 
-
-## 六、客户端 .repo 配置文件详解
+## 八、yum命令使用详解

@@ -1,3 +1,4 @@
+```yaml
 {
     "_ansible_facts_gathered": true, 
     "ansible_all_ipv4_addresses": [
@@ -659,3 +660,5 @@
     ], 
     "module_setup": true
 }
+```
+
